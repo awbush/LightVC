@@ -1206,7 +1206,7 @@ class Lvc_PageController {
 			
 			// Load the view
 			if ( ! $this->hasLoadedView && $this->loadDefaultView) {
-				$this->loadView($this->controllerSubPath . $this->controllerName . '/' . $actionName);
+				$this->loadView($this->getControllerPath() . '/' . $actionName);
 			}
 			
 			$this->afterAction();
@@ -1492,3 +1492,5 @@ class Lvc_View {
 		$this->controller->setLayoutVar($varName, $value);
 	}
 }
+
+?>
