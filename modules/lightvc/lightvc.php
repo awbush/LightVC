@@ -929,6 +929,14 @@ class Lvc_PageController {
 	protected $controllerSubPath = null;
 	
 	/**
+	 * Controller path. (e.g.,  if filesystem has /controllers/subpath/reports/report.php, 
+	 * value = "reports/report")
+	 *
+	 * @var string
+	 **/
+	protected $controllerPath = null;
+	
+	/**
 	 * Action Name (e.g. action_name, not actionActionName)
 	 *
 	 * @var string
@@ -1213,7 +1221,7 @@ class Lvc_PageController {
 	 * 
 	 * For example, you can load another view in your controller with:
 	 * 
-	 *     $this->loadView($this->getControllerName() . '/some_other_action');
+	 *     $this->loadView($this->getControllerPath() . '/some_other_action');
 	 * 
 	 * Or some other controller with:
 	 *
@@ -1337,11 +1345,21 @@ class Lvc_PageController {
 	/**
 	 * Get the controller sub path. Mostly used internally...
 	 *
-	 * @return string controller name
+	 * @return string controller sub path
 	 * @author Travis K. Jansen
 	 **/
 	public function getControllerSubPath() {
 		return $this->controllerSubPath;
+	}
+	
+	/**
+	 * Get the controller path (sub path + controller name). Mostly used internally...
+	 *
+	 * @return string controller path
+	 * @author Travis K. Jansen
+	 **/
+	public function getControllerPath() {
+		return $this->controllerSubPath . $this->controllerName;
 	}
 	
 	/**
@@ -1474,4 +1492,3 @@ class Lvc_View {
 		$this->controller->setLayoutVar($varName, $value);
 	}
 }
-?>
