@@ -726,6 +726,9 @@ class Lvc_RegexRewriteRouter implements Lvc_RouterInterface {
 					if (isset($parsingInfo['sub_path'])) {
 						if (is_int($parsingInfo['sub_path'])){
 							$request->setControllerSubPath(@$matches[$parsingInfo['sub_path']]);
+						} else {
+							// Use the constant value
+							$request->setControllerSubPath($parsingInfo['sub_path']);
 						}
 					}
 					
@@ -1471,5 +1474,4 @@ class Lvc_View {
 		$this->controller->setLayoutVar($varName, $value);
 	}
 }
-
 ?>
