@@ -929,14 +929,6 @@ class Lvc_PageController {
 	protected $controllerSubPath = null;
 	
 	/**
-	 * Controller path. (e.g.,  if filesystem has /controllers/subpath/reports/report.php, 
-	 * value = "reports/report")
-	 *
-	 * @var string
-	 **/
-	protected $controllerPath = null;
-	
-	/**
 	 * Action Name (e.g. action_name, not actionActionName)
 	 *
 	 * @var string
