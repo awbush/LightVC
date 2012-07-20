@@ -160,14 +160,16 @@ class Lvc_Config {
 	
 	// Retrieval Methods
 	
-	public static function getController($controllerName) {
+	public static function getController($controllerName, $controllerSubPath="") {
 		foreach (self::$controllerPaths as $path) {
-			$file = $path . $controllerName . self::$controllerSuffix;
+			$file = $path . $controllerSubPath . $controllerName . self::$controllerSuffix;
+			
 			if (file_exists($file)) {
 				include_once($file);
 				$controllerClass = self::getControllerClassName($controllerName);
 				$controller = new $controllerClass();
 				$controller->setControllerName($controllerName);
+				$controller->setControllerSubPath($controllerSubPath);
 				return $controller;
 			}
 		}
@@ -263,12 +265,16 @@ class Lvc_Exception extends Exception {
  **/
 class Lvc_Request {
 	protected $controllerName = '';
+	protected $controllerSubPath = '';
 	protected $controllerParams = array();
 	protected $actionName = '';
 	protected $actionParams = array();
 	
 	public function getControllerName() {
 		return $this->controllerName;
+	}
+	public function getControllerSubPath() {
+		return $this->controllerSubPath;
 	}
 	public function &getControllerParams() {
 		return $this->controllerParams;
@@ -282,6 +288,9 @@ class Lvc_Request {
 
 	public function setControllerName($controllerName) {
 		$this->controllerName = trim($controllerName);
+	}
+	public function setControllerSubPath($controllerSubPath) {
+		$this->controllerSubPath = trim($controllerSubPath);
 	}
 	public function setControllerParams(&$controllerParams) {
 		$this->controllerParams = $controllerParams;
@@ -681,7 +690,6 @@ class Lvc_RegexRewriteRouter implements Lvc_RouterInterface {
 			$matches = array();
 			foreach ($this->routes as $regex => $parsingInfo) {
 				if (preg_match($regex, $url, $matches)) {
-					
 					// Check for redirect action first
 					if (isset($parsingInfo['redirect'])) {
 						$redirectUrl = preg_replace($regex, $parsingInfo['redirect'], $url);
@@ -712,6 +720,15 @@ class Lvc_RegexRewriteRouter implements Lvc_RouterInterface {
 						} else {
 							// Use the constant value
 							$request->setControllerName($parsingInfo['controller']);
+						}
+					}
+					
+					if (isset($parsingInfo['sub_path'])) {
+						if (is_int($parsingInfo['sub_path'])){
+							$request->setControllerSubPath(@$matches[$parsingInfo['sub_path']]);
+						} else {
+							// Use the constant value
+							$request->setControllerSubPath($parsingInfo['sub_path']);
 						}
 					}
 					
@@ -811,8 +828,15 @@ class Lvc_FrontController {
 				}
 			}
 
+			// Determine if a sub path to the controller was provided
+			$controllerSubPath = $request->getControllerSubPath();
+			if (!empty($controllerSubPath)) {
+				$controllerSubPath .= "/";
+			}
+			
 			// If controller name or action name are not set, set them to default.
 			$controllerName = $request->getControllerName();
+						
 			if (empty($controllerName)) {
 				$controllerName = Lvc_Config::getDefaultControllerName();
 				$actionName     = Lvc_Config::getDefaultControllerActionName();
@@ -825,7 +849,7 @@ class Lvc_FrontController {
 				}
 			}
 
-			$controller = Lvc_Config::getController($controllerName);
+			$controller = Lvc_Config::getController($controllerName, $controllerSubPath);
 			if (is_null($controller)) {
 				throw new Lvc_Exception('Unable to load controller "' . $controllerName . '"');
 			}
@@ -885,6 +909,14 @@ class Lvc_PageController {
 	 * @var string
 	 **/
 	protected $controllerName = null;
+	
+	/**
+	 * Controller Subpath. (e.g.,  if filesystem has /controllers/reports/report.php, 
+	 * value = "reports")
+	 *
+	 * @var string
+	 **/
+	protected $controllerSubPath = null;
 	
 	/**
 	 * Action Name (e.g. action_name, not actionActionName)
@@ -979,6 +1011,19 @@ class Lvc_PageController {
 	 **/
 	public function setControllerName($controllerName) {
 		$this->controllerName = $controllerName;
+	}
+	
+	/**
+	 * Don't call this yourself. It's used internally when creating new
+	 * controllers so the controllers are aware of their sub path without
+	 * needing any help from a user setting a member variable or from some
+	 * reflector class.
+	 *
+	 * @return void
+	 * @author Travis K. Jansen
+	 **/
+	public function setControllerSubPath($controllerSubPath) {
+		$this->controllerSubPath = $controllerSubPath;
 	}
 	
 	/**
@@ -1140,7 +1185,7 @@ class Lvc_PageController {
 			
 			// Load the view
 			if ( ! $this->hasLoadedView && $this->loadDefaultView) {
-				$this->loadView($this->controllerName . '/' . $actionName);
+				$this->loadView($this->getControllerPath() . '/' . $actionName);
 			}
 			
 			$this->afterAction();
@@ -1155,7 +1200,7 @@ class Lvc_PageController {
 	 * 
 	 * For example, you can load another view in your controller with:
 	 * 
-	 *     $this->loadView($this->getControllerName() . '/some_other_action');
+	 *     $this->loadView($this->getControllerPath() . '/some_other_action');
 	 * 
 	 * Or some other controller with:
 	 *
@@ -1274,6 +1319,26 @@ class Lvc_PageController {
 	 **/
 	public function getControllerName() {
 		return $this->controllerName;
+	}
+	
+	/**
+	 * Get the controller sub path. Mostly used internally...
+	 *
+	 * @return string controller sub path
+	 * @author Travis K. Jansen
+	 **/
+	public function getControllerSubPath() {
+		return $this->controllerSubPath;
+	}
+	
+	/**
+	 * Get the controller path (sub path + controller name). Mostly used internally...
+	 *
+	 * @return string controller path
+	 * @author Travis K. Jansen
+	 **/
+	public function getControllerPath() {
+		return $this->controllerSubPath . $this->controllerName;
 	}
 	
 	/**

@@ -21,7 +21,16 @@ $regexRoutes = array(
 		),
 	),
 	
-	// Map controler/action/params
+	// Map report/controller_name/action/params to controllers/report/controller_name.php containing ReportControllerNameController class
+	// Views are expected in views/report/controller_name/view_name.php
+	'#^(subpath)/([^/]*)/?([^/]*)/?(.*)$#i' => array(
+		'sub_path'=>1,
+		'controller' => 2,
+		'action' => 3,
+		'additional_params' => 4,
+	),
+	
+	// Map controller/action/params
 	'#^([^/]+)/([^/]+)/?(.*)$#' => array(
 		'controller' => 1,
 		'action' => 2,
