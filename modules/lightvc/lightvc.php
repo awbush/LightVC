@@ -177,11 +177,15 @@ class Lvc_Config {
 	}
 	
 	public static function getControllerClassName($controllerName) {
-		return str_replace(' ', '', ucwords(str_replace(array('_', '/'), ' ', $controllerName))) . 'Controller';
+	  $controllerName = str_replace('-','',$controllerName);
+		$controllerName = str_replace(' ', '', ucwords(str_replace(array('_', '/'), ' ', $controllerName))) . 'Controller';
+		return $controllerName;
 	}
 	
 	public static function getActionFunctionName($actionName) {
-		return 'action' . str_replace(' ', '', ucwords(str_replace('_', ' ', $actionName)));
+    $actionName = str_replace('-','',$actionName);
+		$actionName = 'action' . str_replace(' ', '', ucwords(str_replace('_', ' ', $actionName)));
+		return $actionName;
 	}
 	
 	public static function getControllerView($viewName, &$data = array()) {
@@ -287,7 +291,7 @@ class Lvc_Request {
 	}
 
 	public function setControllerName($controllerName) {
-		$this->controllerName = trim($controllerName);
+		$this->controllerName = str_replace('-','',trim($controllerName));
 	}
 	public function setControllerSubPath($controllerSubPath) {
 		$this->controllerSubPath = trim($controllerSubPath);
@@ -296,7 +300,7 @@ class Lvc_Request {
 		$this->controllerParams = $controllerParams;
 	}
 	public function setActionName($actionName) {
-		$this->actionName = trim($actionName);
+		$this->actionName = str_replace('-','',trim($actionName));
 	}
 	public function setActionParams($actionParams) {
 		$this->actionParams = $actionParams;
@@ -499,7 +503,7 @@ class Lvc_GetRouter implements Lvc_RouterInterface {
 			$request->setControllerName($params['get'][$this->controllerKey]);
 			
 			if (isset($params['get'][$this->actionKey])) {
-				$request->setActionName($params['get'][$this->actionKey]);
+				$request->setActionName();
 			} else {
 				$request->setActionName(Lvc_Config::getDefaultActionName());
 			}
