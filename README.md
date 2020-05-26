@@ -9,4 +9,11 @@ As such, LightVC does not couple itself to any non-VC related classes either, su
 
 LightVC has been in use in production since early 2007, and is now being released to the public under the FreeBSD license.
 
-Check out the documentation or dive right into the example controllers, views, and application config in the download.
+LightVC Features
+	•	Lightweight single-file view-controller framework.
+	•	Allows usage of any model or ORM.
+	•	Promotes code re-use.
+	•	Highly configurable.
+	•	Fast. Benchmarks coming soon.
+	•	PHP5 Strict.
+
