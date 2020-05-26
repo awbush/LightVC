@@ -1,5 +1,5 @@
 
-About LightVC
+# About LightVC
 
 LightVC is a lightweight model-view-controller (MVC) framework without the model. This decoupling allows any model or object relation mapping (ORM) tool to be used, including none at all if one is not needed.
 
@@ -9,11 +9,24 @@ As such, LightVC does not couple itself to any non-VC related classes either, su
 
 LightVC has been in use in production since early 2007, and is now being released to the public under the FreeBSD license.
 
-LightVC Features
-	•	Lightweight single-file view-controller framework.
-	•	Allows usage of any model or ORM.
-	•	Promotes code re-use.
-	•	Highly configurable.
-	•	Fast. Benchmarks coming soon.
-	•	PHP5 Strict.
+## LightVC Features
+- Lightweight single-file view-controller framework.
+- Allows usage of any model or ORM.
+- Promotes code re-use.
+- Highly configurable.
+- Fast. Benchmarks coming soon.
+- PHP5 Strict.
 
+
+## LightVC Documentation
+
+- Quickstart Guide
+- Configuration
+  - Routes
+  - Environments
+  - Web Server Config
+- Controllers
+- Views
+  - Elements
+  - Layouts
+- Errors
