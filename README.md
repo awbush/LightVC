@@ -20,15 +20,15 @@ LightVC has been in use in production since early 2007, and is now being release
 
 ## LightVC Documentation
 
-- Quickstart Guide
-- Configuration
-  - Routes
-  - Web Server Config
-- Controllers
-- Views
-  - Elements
-  - Layouts
-- Errors
+- [Quickstart Guide](#quickstart-guide)
+- [Configuration](#configuration)
+  - [Routes](#Routes)
+  - [Web Server Config](#web-server-config)
+- [Controllers](#controllers)
+- [Views](#views)
+  - [Elements](#elements)
+  - [Layouts](#layouts)
+- [Errors](#errors)
 
 ## Quickstart Guide
 
