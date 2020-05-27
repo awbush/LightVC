@@ -217,7 +217,7 @@ LightVC has extremely powerful routing options and the ability to take customize
 
 If mod_rewrite is available, the regex rewrite router is likely to be all that's needed.
 
-The webroot/index.php file might contain:
+The `webroot/index.php` file might contain:
 
 ```
 $fc = new Lvc_FrontController();
@@ -281,7 +281,7 @@ $regexRoutes = array(
 ```
 As of version 1.0.4, the Lvc_RegexRewriteRouter allows a redirect parameter instead of the controller/action parameters. This allows a route to redirect to another page instead of loading up a controller/action.
 
-### Static Examples:
+### Static Redirect Examples:
 ```
 '#^test/?$#' => array(
     'redirect' => '/some/other/page/'
@@ -289,8 +289,11 @@ As of version 1.0.4, the Lvc_RegexRewriteRouter allows a redirect parameter inst
 '#^test2/?$#' => array(
     'redirect' => 'http://lightvc.org/'
 ),
-Dynamic Example:
+```
 
+### Dynamic Redirect Example:
+
+```
 '#^test/([^/]*)/?$#' => array(
     'redirect' => '/faq/$1'
 ),
