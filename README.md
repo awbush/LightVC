@@ -377,8 +377,10 @@ In the controller:
 ```
 $exampleGet = $this->get['example'];
 $examplePost = $this->post['example'];
-There is also a postData attribute that is set to the contents of $_POST['data'] and $_FILES['data'], with some remapping of the $_FILES['data'] so that it matches what's in $_POST['data'].
 ```
+
+There is also a postData attribute that is set to the contents of $_POST['data'] and $_FILES['data'], with some remapping of the $_FILES['data'] so that it matches what's in $_POST['data'].
+
 
 Example usage of postData:
 
