@@ -22,11 +22,11 @@ LightVC has been in use in production since early 2007, and is now being release
 
 - [Quickstart Guide](#quickstart-guide)
 - [Configuration](#configuration)
-  - [Routes](#Routes)
-  - [Web Server Config](#web-server-config)
+  - [Routes](#routes)
+  - [Web Server Config](#web-server-configuration-examples)
 - [Controllers](#controllers)
-- [Views](#views)
-  - [Elements](#elements)
+- [Views](#views-and-elements)
+  - [Elements](#views-and-elements)
   - [Layouts](#layouts)
 - [Errors](#errors)
 
@@ -515,7 +515,7 @@ protected function afterAction() {
 ```
 <?php $this->renderElement('foo', array('varName' => 'value')); ?>
 ```
-##### Layouts
+### Layouts
 
 Layouts are special views that get wrapped around the controller’s view output. They don’t have to be used, but are the best way to make several pages use the same “layout.”
 
