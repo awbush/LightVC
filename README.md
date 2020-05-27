@@ -358,3 +358,144 @@ url.rewrite-once = (
 
 References
 - [Lighttpd mod_rewrite Documentation](http://trac.lighttpd.net/trac/wiki/Docs%3AModRewrite)
+
+## Controllers
+
+- Access Get/Post Data
+- Manually invoke (or disable) a view
+- Changing/Disabling the Layout
+- Passing Variables to the View
+- Setting Layout Variables
+- Redirecting
+- Requesting a sub action
+- Execute code before/after an action
+
+### Access Get/Post Data
+
+In the controller:
+
+```
+$exampleGet = $this->get['example'];
+$examplePost = $this->post['example'];
+There is also a postData attribute that is set to the contents of $_POST['data'] and $_FILES['data'], with some remapping of the $_FILES['data'] so that it matches what's in $_POST['data'].
+```
+
+Example usage of postData:
+
+```
+if (!empty($this->postData)) {
+    // User submitted form
+    $book = new Book();
+    $book->setFields($this->postData['book']);
+    if ($book->save()) {
+        Messenger::addFlash('message', 'Book saved successfully.');
+        $this->redirect('/book/view/' . $book->getBookId());
+        exit();
+    } else {
+        $this->setVar('errors', $book->getValidationErrors());
+    }
+}
+```
+### Manually invoke (or disable) a view
+
+The view corresponding to the current action is automatically invoked by default.
+
+You can force a view to load at any time (thus disabling the automatic invocation):
+```
+$this->loadView($this->controllerName . '/custom_view');
+```
+You can also disable any view from loading:
+```
+$this->loadDefaultView = false;
+```
+
+### Changing/Disabling the Layout
+
+You can change the layout in the controller at any time with:
+
+`$this->setLayout('new_layout');`
+
+You can disable it by setting it to null (the default):
+
+`$this->setLayout(null);`
+
+It probably makes most sense to specify a default layout in an AppController and then override it on an as-needed basis:
+
+```
+<?php
+class AppController extends Lvc_Controller {
+    protected $layout = 'default';
+}
+?>
+```
+
+### Passing Variables to the View
+
+In the controller:
+
+`$this->setVar('message', 'Weeeee!');`
+
+In the view:
+
+`<?php echo $message ?>`
+
+You can also build an array of variables and set them en masse:
+
+```
+$data = array();
+$data['error'] = '';
+$data['message'] = 'Weeeeeeeeeeee!';
+$data['userName'] = 'Nobody';
+$this->setVars($data);
+```
+
+### Setting Layout Variables
+
+In the controller:
+
+`$this->setLayoutVar('layoutVarName', 'value');`
+
+In the layout:
+
+`<?php echo $layoutVarName ?>`
+
+### Redirecting
+
+##### In the controller:
+
+```
+$this->redirect($url);
+exit(); // redirect does not exit automatically so that post script can be run.
+```
+### Requesting a sub action
+
+##### Inside a controller action method:
+```
+$request = new Lvc_Request();
+$request->setControllerName($this->controllerName);
+$request->setControllerParams($this->params);
+$request->setActionName('some_other_action');
+$request->setActionParams($params); // Set optional params
+$output = $this->getRequestOutput($request);
+```
+Or, you can pass the request attributes to the requestAction() method:
+```
+$output = $this->requestAction($actionName);
+$output = $this->requestAction($actionName, $actionParams, $controllerName, $controllerParams);
+```
+### Execute code before/after an action
+
+##### To execute code before an action, override the beforeAction() method:
+```
+protected function beforeAction() {
+    parent::beforeAction(); // chain to parent
+    $this->setLayoutVar('pageTitle', 'Default Title');
+}
+```
+##### To execute code after an action, override the afterAction() method:
+```
+protected function afterAction() {
+    parent::afterAction(); // chain to parent
+    // do some stuff
+}
+```
