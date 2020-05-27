@@ -339,7 +339,7 @@ NameVirtualHost *:8000
 </Directory>
 ```
 References
-- Apache 2.2 AllowOverride Documentation
+- [Apache 2.2 AllowOverride Documentation](http://httpd.apache.org/docs/2.2/mod/core.html#allowoverride)
 
 ### Lighttpd Example
 
@@ -357,4 +357,4 @@ url.rewrite-once = (
 ```
 
 References
-- Lighttpd mod_rewrite Documentation
+- [Lighttpd mod_rewrite Documentation](http://trac.lighttpd.net/trac/wiki/Docs%3AModRewrite)
