@@ -513,6 +513,25 @@ protected function afterAction() {
 ```
 <?php $this->renderElement('foo', array('varName' => 'value')); ?>
 ```
+##### Layouts
+
+Layouts are special views that get wrapped around the controller’s view output. They don’t have to be used, but are the best way to make several pages use the same “layout.”
+
+An example layout might contain:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo htmlentities($pageTitle); ?></title>
+</head>
+<body>
+	<?php echo $layoutContent; ?>
+</body>
+</html>
+```
+Where `$layoutContent` will be set to the output from a controller action’s view. 
 
 ##### Setting Layout Variables
 
